@@ -18,7 +18,7 @@ const App = ({ Component }) => {
 };
 
 App.prototype = {
-  // 프로토타입은 귀찮긴하지만 안정화를 위해  하는게 좋음
+  // 프로토타입은 귀찮긴하지만 안정화를 위해 하는게 좋음
   Component: PropTypes.elementType.isRequired,
 };
 
