@@ -2,9 +2,15 @@ import PropTypes from "prop-types";
 import Link from "next/link";
 import { Menu, Button, Input, Row, Col } from "antd";
 import { useState } from "react";
+import styled from "styled-components";
 
 import UserProfile from "../components/UserProfile";
 import LoginForm from "../components/LoginForm";
+
+const SearchInput = styled(Input.Search)`
+  // antd 디자인에 styled-component넣는법
+  verticalalign: "middle";
+`;
 
 const AppLayout = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,11 +28,7 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <Input.Search
-            placeholder="검색"
-            allowClear
-            style={{ verticalAlign: "middle" }}
-          />
+          <SearchInput placeholder="검색" allowClear enterButton />
         </Menu.Item>
         <Menu.Item>
           <Link href="/signup">
