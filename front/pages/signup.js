@@ -1,17 +1,52 @@
 import AppLayout from "../components/AppLayout";
+import useInput from "../hooks/useinput";
 import Head from "next/head";
-import { Form } from "antd";
-import { useCallback } from "react";
+import { Form, Input, Checkbox, Button } from "antd";
+import styled from "styled-components";
+import { useCallback, useState } from "react";
+
+const ErrorMessage = styled.div`
+  color: red;
+`;
 
 const Signup = () => {
-  const onSUbmit = useCallback(() => {}, []);
+  const [id, onChangeId] = useInput("");
+  const [password, onChangePassword] = useInput("");
+  const [nickname, onChangeNickname] = useInput("");
+  // LoginForm.js 주석 참조
+
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const onChangePasswordCheck = useCallback(
+    (e) => {
+      setPasswordCheck(e.target.value);
+      setPasswordError(e.target.value !== password);
+    },
+    [password]
+  );
+  const [term, setTerm] = useState(false);
+  const [termError, setTermError] = useState(false);
+  const onChangeTerm = useCallback((e) => {
+    setTerm(e.target.checked);
+    setTermError(false);
+  }, []);
+
+  const onSubmit = useCallback(() => {
+    if (password !== passwordCheck) {
+      return setPasswordError(true);
+    }
+    if (!term) {
+      return setTermError(true);
+    }
+    console.log(id, nickname, password);
+  }, [password, passwordCheck, term]);
   return (
     <>
-      <Head>
-        <title>회원가입 | NodeBird</title>
-      </Head>
       <AppLayout>
-        <Form onFinish={onSUbmit}>
+        <Head>
+          <title>회원가입 | NodeBird</title>
+        </Head>
+        <Form onFinish={onSubmit}>
           <div>
             <label htmlFor="user-id">아이디</label>
             <br />
@@ -45,8 +80,24 @@ const Signup = () => {
               type="password"
               value={passwordCheck}
               required
-              onChange={onChangePassword}
+              onChange={onChangePasswordCheck}
             />
+            {passwordError && (
+              <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+            )}
+          </div>
+          <div>
+            <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>
+              장택진 말을 잘 들을 것을 동의합니다.
+            </Checkbox>
+            {termError && (
+              <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>
+            )}
+          </div>
+          <div style={{ marginTop: 10 }}>
+            <Button type="primary" htmlType="submit">
+              가입하기
+            </Button>
           </div>
         </Form>
       </AppLayout>

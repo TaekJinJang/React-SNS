@@ -1,5 +1,5 @@
 import { Card, List, Button } from "antd";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import { StopOutlined } from "@ant-design/icons";
 
 const FollowList = ({ header, data }) => {
@@ -29,7 +29,7 @@ const FollowList = ({ header, data }) => {
 
 FollowList.propTypes = {
   header: propTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  data: propTypes.array.isRequired,
 };
 
 export default FollowList;
