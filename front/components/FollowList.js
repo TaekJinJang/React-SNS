@@ -1,6 +1,12 @@
 import { Card, List, Button } from "antd";
 import propTypes from "prop-types";
 import { StopOutlined } from "@ant-design/icons";
+import styled from "styled-components";
+
+const Div = styled.div`
+  margin: 10px 0px;
+  text-align: center;
+`;
 
 const FollowList = ({ header, data }) => {
   return (
@@ -10,9 +16,9 @@ const FollowList = ({ header, data }) => {
       size="small"
       grid={{ gutter: 4, xs: 2, md: 3 }}
       loadMore={
-        <div style={{ textAlign: "center", margin: "10px 0px" }}>
+        <Div>
           <button>더 보기</button>
-        </div>
+        </Div>
       }
       bordered
       dataSource={data}

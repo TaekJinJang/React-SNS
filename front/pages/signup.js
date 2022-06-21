@@ -8,6 +8,9 @@ import { useCallback, useState } from "react";
 const ErrorMessage = styled.div`
   color: red;
 `;
+const marginTop_1 = styled.div`
+  margintop: 10px;
+`;
 
 const Signup = () => {
   const [id, onChangeId] = useInput("");
@@ -94,11 +97,11 @@ const Signup = () => {
               <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>
             )}
           </div>
-          <div style={{ marginTop: 10 }}>
+          <marginTop_1>
             <Button type="primary" htmlType="submit">
               가입하기
             </Button>
-          </div>
+          </marginTop_1>
         </Form>
       </AppLayout>
     </>
