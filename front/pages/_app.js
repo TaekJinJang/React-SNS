@@ -4,7 +4,7 @@ import Head from "next/head"; // next에서 제공하는 head 태그
 
 // pages 폴더의 공통 부분, import도 다 포함
 // 특정 컴포넌트들에만 공통으로 들어간다면 components 폴더에 AppLayout 같은 컴포넌트를 만들어서 사용하고 모든 페이지에 공통적으로 사용된다면 _app.js 형식으로 사용
-
+//
 const App = ({ Component }) => {
   return (
     <>
