@@ -5,6 +5,8 @@ import styled from "styled-components";
 import propTypes from "prop-types";
 import useInput from "../hooks/useinput";
 import AppLayout from "../components/AppLayout";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../reducers";
 
 const ButtonWrapper = styled.div`
   margin: 10px 0px;
@@ -14,7 +16,8 @@ const FormWrapper = styled(Form)`
   padding: 10px;
 `;
 
-const LoginForm = ({ setIsLoggedIn }) => {
+const LoginForm = () => {
+  const dispatch = useDispatch();
   // const [id, setId] = useState("");
   // const onChangeId = useCallback((e) => {
   //   setId(e.target.value);
@@ -26,7 +29,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
   // props로 받아오는 state들은 다 콜백함수를 써주는게 최적화에 좋다
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
-    setIsLoggedIn(true);
+    dispatch(loginAction({ id, password }));
   }, [id, password]);
   return (
     <FormWrapper onFinish={onSubmitForm}>
@@ -60,8 +63,9 @@ const LoginForm = ({ setIsLoggedIn }) => {
   );
 };
 
-LoginForm.propTypes = {
-  setIsLoggedIn: propTypes.func.isRequired,
-};
+// props를 안받으니 주석
+// LoginForm.propTypes = {
+//   setIsLoggedIn: propTypes.func.isRequired,
+// };
 
 export default LoginForm;
