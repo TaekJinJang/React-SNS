@@ -6,7 +6,7 @@ import propTypes from "prop-types";
 import useInput from "../hooks/useinput";
 import AppLayout from "../components/AppLayout";
 import { useDispatch } from "react-redux";
-import { loginAction } from "../reducers";
+import { loginAction } from "../reducers/user";
 
 const ButtonWrapper = styled.div`
   margin: 10px 0px;
