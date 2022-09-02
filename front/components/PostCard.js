@@ -64,7 +64,7 @@ const PostCard = ({ post }) => {
           description={post.content}
         />
       </Card>
-      {commentFormOpened && <div> 댓글부분 </div>}
+      {commentFormOpened && <div> 댓글 </div>}
       {/* <CommentForm />
       <Comments /> */}
     </div>
