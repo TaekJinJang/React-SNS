@@ -21,8 +21,7 @@ const PostCard = ({ post }) => {
     setCommentFormOpened((prev) => !prev); // state를 True/False로 바꾸기
   });
   const id = useSelector((state) => state.user.me && state.user.me.id);
-  // const id = useSelector((state) => state.user.me?.id); 신문법 - 옵셔널 체이닝 연산자
-
+  // const id = useSelector((state) => state.user.me?.id); 신문법 - 옵셔널 체이닝 연산자 .
   return (
     <div style={{ marginBottom: 20 }}>
       <Card
@@ -70,6 +69,7 @@ const PostCard = ({ post }) => {
     </div>
   );
 };
+//`//`//
 
 PostCard.propTypes = {
   post: PropTypes.shape({
