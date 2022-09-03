@@ -12,7 +12,10 @@ export const initialState = {
           src: "https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg",
         },
         {
-          src: "https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001998.jpg",
+          src: "https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg",
+        },
+        {
+          src: "https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg",
         },
       ],
       Comments: [
