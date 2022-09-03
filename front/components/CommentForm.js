@@ -10,7 +10,7 @@ const CommentForm = ({ post }) => {
   const onSubmitComment = useCallback(() => {}, [commentText]);
   return (
     <Form onFinish={onSubmitComment}>
-      <Form.Item>
+      <Form.Item style={{ position: "relative", margin: 0 }}>
         <Input.TextArea
           value={commentText}
           onChange={onChangeCommentText}
