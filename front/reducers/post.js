@@ -22,6 +22,12 @@ export const initialState = {
           },
           content: "화이팅입니다.",
         },
+        {
+          User: {
+            nickname: "TK",
+          },
+          content: "화이팅입니다2.",
+        },
       ],
     },
   ],
