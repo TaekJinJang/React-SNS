@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Link from "next/link";
 import { Menu, Button, Input, Row, Col } from "antd";
 import { useState } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { useSelector } from "react-redux";
 
 import UserProfile from "../components/UserProfile";
@@ -10,9 +10,20 @@ import LoginForm from "../components/LoginForm";
 
 const SearchInput = styled(Input.Search)`
   // antd 디자인에 styled-component넣는법
-  verticalalign: "middle";
+  vertical-align: "middle";
 `;
-
+const Global = createGlobalStyle`
+  .ant-row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+  .ant-col:first-child {
+    padding-left: 0 !important
+  }
+  .ant-col:last-child {
+    padding-right: 0 !important;
+  }
+`;
 const AppLayout = ({ children }) => {
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 더미데이터
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
@@ -20,6 +31,7 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <Menu mode="horizontal">
+        <Global />
         <Menu.Item>
           <Link href="/">
             <a>노드버드</a>
