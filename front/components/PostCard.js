@@ -58,6 +58,7 @@ const PostCard = ({ post }) => {
           </Popover>,
         ]}
       >
+        {/* asdasd */}
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
