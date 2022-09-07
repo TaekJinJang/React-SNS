@@ -10,7 +10,7 @@ const Home = () => {
 
   return (
     <AppLayout>
-      {isLoggedIn && <PostForm />}
+      {isLoggedIn && <PostForm />} {/* 로그인 했을때만 보여짐 */}
       {mainPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

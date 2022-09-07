@@ -1,11 +1,13 @@
 export const initialState = {
+  // 초기 데이터값 
   isLoggedIn: false,
   me: null,
   signUpData: {},
   loginData: {},
 };
 export const loginAction = (data) => {
-  return {
+  // 함수는 컴포넌트에서 불러와야 하니 export를 붙여준다
+  return { // 데이터를 받아온 후 로그인 정보가 맞는지 확인
     type: "LOG_IN",
     data,
   };
