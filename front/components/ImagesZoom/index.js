@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import Slick from "react-slick";
 import {
@@ -13,9 +13,15 @@ import {
 
 const ImagesZoom = ({ images, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const exit = useCallback((e) => {
+    // 상세이미지를 esc키를 눌러서 나갈 수 있음
+    if (e.keyCode === 27) {
+      onClose();
+    }
+  }, []);
 
   return (
-    <Overlay>
+    <Overlay onKeyDown={exit}>
       <Global />
       <Header>
         <h1>상세 이미지</h1>
