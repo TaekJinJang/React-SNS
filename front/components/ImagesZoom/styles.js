@@ -34,7 +34,7 @@ export const Header = styled.header`
   padding: 0;
   text-align: center;
 
-  & h1 { 
+  & h1 {
     margin: 0;
     font-size: 17px;
     color: #333;

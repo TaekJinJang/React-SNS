@@ -11,10 +11,33 @@ export const loginAction = (data) => {
     type: "LOG_IN",
     data,
   };
+export const loginRequestAction = (data) => {
+  return { 
+    type: "LOG_IN_REQUEST",
+    data,
+  };
+};
+export const loginSuccessAction = (data) => {
+  return { 
+    type: "LOG_IN_SUCCESS",
+    data,
+  };
 };
 export const logoutAction = (data) => {
   return {
     type: "LOG_OUT",
+    data,
+  };
+};
+export const logoutRequestAction = (data) => {
+  return {
+    type: "LOG_OUT_REQUEST",
+    data,
+  };
+};
+export const logoutSuccessAction = (data) => {
+  return {
+    type: "LOG_OUT_SUCCESS",
     data,
   };
 };
