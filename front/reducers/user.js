@@ -1,6 +1,8 @@
 export const initialState = {
   // 초기 데이터값
   isLoggedIn: false,
+  isLoggingIn: false, // 로그인 시도중 !!
+  isLoggingOut: false, // 로그아웃 시도중 !!
   me: null,
   signUpData: {},
   loginData: {},
@@ -46,18 +48,40 @@ export const logoutSuccessAction = (data) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "LOG_IN":
+    case "LOG_IN_REQUEST":
       return {
         ...state,
+        isLoggingIn: true,
+      };
+    case "LOG_IN_SUCCESS":
+      return {
+        ...state,
+        isLoggingIn: false,
         isLoggedIn: true,
-        me: action.data,
+        me: { ...action.data, nickname: "tk" },
+      };
+    case "LOG_IN_FAILURE":
+      return {
+        ...state,
+        isLoggingIn: false,
+        isLoggedIn: false,
       };
 
-    case "LOG_OUT":
+    case "LOG_OUT_REQUEST":
       return {
         ...state,
-        isLoggedIn: false,
-        me: null,
+        isLoggingOut: true,
+      };
+    case "LOG_OUT_SUCCESS":
+      return {
+        ...state,
+        isLoggingOut: false,
+        isLoggedIn: true,
+      };
+    case "LOG_OUT_FAILURE":
+      return {
+        ...state,
+        isLoggingOut: false,
       };
     default:
       return state;

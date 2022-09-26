@@ -5,8 +5,8 @@ import styled from "styled-components";
 import propTypes from "prop-types";
 import useInput from "../hooks/useinput";
 import AppLayout from "../components/AppLayout";
-import { useDispatch } from "react-redux";
-import { loginAction } from "../reducers/user";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRequestAction } from "../reducers/user";
 
 const ButtonWrapper = styled.div`
   margin: 10px 0px;
@@ -25,11 +25,12 @@ const LoginForm = () => {
   // 주석 코드들을 커스텀 hooks으로 만들어서 줄일 수 있음 useinput.js
   const [id, onChangeId] = useInput("");
   const [password, onChangePassword] = useInput("");
+  const { isLoggingIn } = useSelector((state) => state.user);
 
   // props로 받아오는 state들은 다 콜백함수를 써주는게 최적화에 좋다
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
-    dispatch(loginAction({ id, password }));
+    dispatch(loginRequestAction({ id, password }));
   }, [id, password]);
   return (
     <FormWrapper onFinish={onSubmitForm}>
