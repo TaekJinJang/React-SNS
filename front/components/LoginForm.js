@@ -25,7 +25,7 @@ const LoginForm = () => {
   // 주석 코드들을 커스텀 hooks으로 만들어서 줄일 수 있음 useinput.js
   const [id, onChangeId] = useInput("");
   const [password, onChangePassword] = useInput("");
-  const { isLoggingIn } = useSelector((state) => state.user);
+  const { logInLoading } = useSelector((state) => state.user);
 
   // props로 받아오는 state들은 다 콜백함수를 써주는게 최적화에 좋다
   const onSubmitForm = useCallback(() => {
@@ -51,7 +51,7 @@ const LoginForm = () => {
       </div>
       <ButtonWrapper>
         {/* 버튼에다 htmlType="submit" 을 해줘야 Form에 onFinish(PreventDefault)를 넣을 수 있음 */}
-        <Button type="primary" htmlType="submit" loading={false}>
+        <Button type="primary" htmlType="submit" loading={logInLoading}>
           로그인
         </Button>
         <Link href={"/signup"}>

@@ -14,8 +14,9 @@ const loggerMiddleware =
     return next(action);
   };
 
-const configureStore = () => {
-  const sagaMiddleware = createSagaMiddleware;
+const configureStore = (context) => {
+  console.log(context);
+  const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware, loggerMiddleware];
   const enhancer =
     process.env.NODE_ENV === "production"
