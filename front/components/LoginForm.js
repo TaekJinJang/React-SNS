@@ -23,21 +23,26 @@ const LoginForm = () => {
   //   setId(e.target.value);
   // }, []);
   // 주석 코드들을 커스텀 hooks으로 만들어서 줄일 수 있음 useinput.js
-  const [id, onChangeId] = useInput("");
+  const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
   const { logInLoading } = useSelector((state) => state.user);
 
   // props로 받아오는 state들은 다 콜백함수를 써주는게 최적화에 좋다
   const onSubmitForm = useCallback(() => {
-    console.log(id, password);
-    dispatch(loginRequestAction({ id, password }));
-  }, [id, password]);
+    console.log(email, password);
+    dispatch(loginRequestAction({ email, password }));
+  }, [email, password]);
   return (
     <FormWrapper onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">아이디</label>
+        <label htmlFor="user-email">아이디</label>
         <br />
-        <Input name="user-id" value={id} onChange={onChangeId} required />
+        <Input
+          name="user-email"
+          value={email}
+          onChange={onChangeEmail}
+          required
+        />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
