@@ -1,17 +1,17 @@
-import { Form, Input, Button } from "antd";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import useinput from "../hooks/useinput";
-import { addPost } from "../reducers/post";
+import { Form, Input, Button } from 'antd';
+import { useCallback, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import useinput from '../hooks/useinput';
+import { addPost } from '../reducers/post';
 
-const PostForm = () => {
+function PostForm() {
   const dispatch = useDispatch();
   const { imagePaths, addPostDone } = useSelector((state) => state.post);
-  const [text, onChangeText, setText] = useinput("");
+  const [text, onChangeText, setText] = useinput('');
 
   useEffect(() => {
     if (addPostDone) {
-      setText("");
+      setText('');
     }
   }, [addPostDone]);
 
@@ -20,7 +20,7 @@ const PostForm = () => {
   // }, []);
   const onSubmit = useCallback(() => {
     dispatch(addPost(text));
-    setText("");
+    setText('');
   }, [text]);
 
   const imageInput = useRef();
@@ -29,7 +29,7 @@ const PostForm = () => {
   }, [imageInput.current]);
   return (
     <Form
-      style={{ margin: "10px 0 20px" }}
+      style={{ margin: '10px 0 20px' }}
       encType="multipart/form-data"
       onFinish={onSubmit}
     >
@@ -40,16 +40,16 @@ const PostForm = () => {
         placeholder="어떤 신기한 일이 있었나요?"
       />
       <div>
-        <input type={"file"} multiple hidden ref={imageInput} />
+        <input type="file" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-        <Button type="primary" style={{ float: "right" }} htmlType="submit">
+        <Button type="primary" style={{ float: 'right' }} htmlType="submit">
           짹짹
         </Button>
       </div>
       <div>
         {imagePaths.map((v) => (
-          <div key={v} style={{ display: "inline-block" }}>
-            <img src={v} style={{ width: "200px" }} alt={v} />
+          <div key={v} style={{ display: 'inline-block' }}>
+            <img src={v} style={{ width: '200px' }} alt={v} />
             <div>
               <Button>제거</Button>
             </div>
@@ -58,5 +58,5 @@ const PostForm = () => {
       </div>
     </Form>
   );
-};
+}
 export default PostForm;

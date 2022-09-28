@@ -1,14 +1,14 @@
-import { Card, List, Button } from "antd";
-import propTypes from "prop-types";
-import { StopOutlined } from "@ant-design/icons";
-import styled from "styled-components";
+import { Card, List, Button } from 'antd';
+import propTypes from 'prop-types';
+import { StopOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 
 const Div = styled.div`
   margin: 10px 0px;
   text-align: center;
 `;
 
-const FollowList = ({ header, data }) => {
+function FollowList({ header, data }) {
   return (
     <List
       style={{ marginBottom: 20 }}
@@ -31,7 +31,7 @@ const FollowList = ({ header, data }) => {
       }}
     />
   );
-};
+}
 
 FollowList.propTypes = {
   header: propTypes.string.isRequired,

@@ -1,12 +1,12 @@
-import { Button, Form, Input } from "antd";
-import { useCallback, useState } from "react";
-import Link from "next/dist/client/link";
-import styled from "styled-components";
-import propTypes from "prop-types";
-import useInput from "../hooks/useinput";
-import AppLayout from "../components/AppLayout";
-import { useDispatch, useSelector } from "react-redux";
-import { loginRequestAction } from "../reducers/user";
+import { Button, Form, Input } from 'antd';
+import { useCallback } from 'react';
+import Link from 'next/dist/client/link';
+import styled from 'styled-components';
+
+import { useDispatch, useSelector } from 'react-redux';
+import useInput from '../hooks/useinput';
+
+import { loginRequestAction } from '../reducers/user';
 
 const ButtonWrapper = styled.div`
   margin: 10px 0px;
@@ -16,15 +16,15 @@ const FormWrapper = styled(Form)`
   padding: 10px;
 `;
 
-const LoginForm = () => {
+function LoginForm() {
   const dispatch = useDispatch();
   // const [id, setId] = useState("");
   // const onChangeId = useCallback((e) => {
   //   setId(e.target.value);
   // }, []);
   // 주석 코드들을 커스텀 hooks으로 만들어서 줄일 수 있음 useinput.js
-  const [email, onChangeEmail] = useInput("");
-  const [password, onChangePassword] = useInput("");
+  const [email, onChangeEmail] = useInput('');
+  const [password, onChangePassword] = useInput('');
   const { logInLoading } = useSelector((state) => state.user);
 
   // props로 받아오는 state들은 다 콜백함수를 써주는게 최적화에 좋다
@@ -59,7 +59,7 @@ const LoginForm = () => {
         <Button type="primary" htmlType="submit" loading={logInLoading}>
           로그인
         </Button>
-        <Link href={"/signup"}>
+        <Link href="/signup">
           <a>
             <Button>회원가입</Button>
           </a>
@@ -67,7 +67,7 @@ const LoginForm = () => {
       </ButtonWrapper>
     </FormWrapper>
   );
-};
+}
 
 // props를 안받으니 주석
 // LoginForm.propTypes = {

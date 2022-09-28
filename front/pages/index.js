@@ -1,10 +1,10 @@
 // import React from 'react'; // Next는 이 구문이 없어도 됌 !
-import { useSelector } from "react-redux";
-import AppLayout from "../components/AppLayout";
-import PostCard from "../components/PostCard";
-import PostForm from "../components/PostForm";
+import { useSelector } from 'react-redux';
+import AppLayout from '../components/AppLayout';
+import PostCard from '../components/PostCard';
+import PostForm from '../components/PostForm';
 
-const Home = () => {
+function Home() {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { mainPosts } = useSelector((state) => state.post);
 
@@ -16,6 +16,6 @@ const Home = () => {
       ))}
     </AppLayout>
   );
-};
+}
 
 export default Home;

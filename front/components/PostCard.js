@@ -4,16 +4,16 @@ import {
   HeartTwoTone,
   MessageOutlined,
   RetweetOutlined,
-} from "@ant-design/icons";
-import { Avatar, Button, Card, Comment, List, Popover } from "antd";
-import { useCallback, useState } from "react";
-import { useSelector } from "react-redux";
-import PostImages from "./PostImages";
-import PropTypes from "prop-types";
-import CommentForm from "./CommentForm";
-import PostCardContent from "./PostCardContent";
+} from '@ant-design/icons';
+import { Avatar, Button, Card, Comment, List, Popover } from 'antd';
+import { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import PostImages from './PostImages';
+import CommentForm from './CommentForm';
+import PostCardContent from './PostCardContent';
 
-const PostCard = ({ post }) => {
+function PostCard({ post }) {
   const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const onToggleLike = useCallback(() => {
@@ -89,8 +89,8 @@ const PostCard = ({ post }) => {
       <Comments /> */}
     </div>
   );
-};
-//`//`//
+}
+// `//`//
 
 PostCard.propTypes = {
   post: PropTypes.shape({

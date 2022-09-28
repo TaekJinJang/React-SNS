@@ -1,10 +1,10 @@
 // configureStore.js
-import { createWrapper } from "next-redux-wrapper";
-import { applyMiddleware, compose, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import reducer from "../reducers";
-import createSagaMiddleware from "redux-saga";
-import rootSaga from "../sagas/index";
+import { createWrapper } from 'next-redux-wrapper';
+import { applyMiddleware, compose, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
+import reducer from '../reducers';
+import rootSaga from '../sagas/index';
 
 const loggerMiddleware =
   ({ dispatch, getState }) =>
@@ -19,7 +19,7 @@ const configureStore = (context) => {
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware, loggerMiddleware];
   const enhancer =
-    process.env.NODE_ENV === "production"
+    process.env.NODE_ENV === 'production'
       ? compose(applyMiddleware(...middlewares)) // 배포용
       : composeWithDevTools(applyMiddleware(...middlewares)); // 개발용
   const store = createStore(reducer, enhancer);
@@ -28,7 +28,7 @@ const configureStore = (context) => {
 };
 
 const wrapper = createWrapper(configureStore, {
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === 'development',
 });
 
 export default wrapper;
