@@ -9,7 +9,9 @@ function CommentForm({ post }) {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const id = useSelector((state) => state.user.me?.id);
-  const { addCommentDone } = useSelector((state) => state.post);
+  const { addCommentDone, addCommentLoading } = useSelector(
+    (state) => state.post,
+  );
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
   useEffect(() => {
@@ -32,7 +34,12 @@ function CommentForm({ post }) {
           onChange={onChangeCommentText}
           rows={4}
         />
-        <Button type="primary" htmlType="submit">
+        <Button
+          style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1 }}
+          type="primary"
+          htmlType="submit"
+          loading={addCommentLoading}
+        >
           삐약
         </Button>
       </Form.Item>

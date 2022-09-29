@@ -5,12 +5,12 @@ import PostCard from '../components/PostCard';
 import PostForm from '../components/PostForm';
 
 function Home() {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   const { mainPosts } = useSelector((state) => state.post);
 
   return (
     <AppLayout>
-      {isLoggedIn && <PostForm />} {/* 로그인 했을때만 보여짐 */}
+      {me && <PostForm />} {/* 로그인 했을때만 보여짐 */}
       {mainPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
