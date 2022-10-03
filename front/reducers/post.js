@@ -22,14 +22,18 @@ export const initialState = {
       ],
       Comments: [
         {
+          id: shortId.generate(),
           User: {
-            nickname: 'TK',
+            id: shortId.generate(),
+            nickname: 'TsK',
           },
           content: '화이팅입니다.',
         },
         {
+          id: shortId.generate(),
           User: {
-            nickname: 'TK',
+            id: shortId.generate(),
+            nickname: 'TaK',
           },
           content: '화이팅입니다2.',
         },
@@ -40,7 +44,10 @@ export const initialState = {
   addPostLoading: false, // 게시글 등록 시도중
   addPostDone: false,
   addPostError: null,
-  addCommentLoading: false, // 게시글 등록 시도중
+  removePostLoading: false, // 게시글 삭제 시도중
+  removePostDone: false,
+  removePostError: null,
+  addCommentLoading: false, // 댓글 등록 시도중
   addCommentDone: false,
   addCommentError: null,
 };
@@ -48,9 +55,14 @@ export const initialState = {
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
+export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -62,15 +74,15 @@ export const addComment = (data) => ({
 });
 
 const dummyPost = (data) => ({
-  id: shortId.generate(),
-  content: data,
+  id: data.id,
+  content: data.content,
   User: {
     id: 1,
     nickname: '제로초',
   },
 
   Images: [],
-  Comment: [],
+  Comments: [],
 });
 
 const dummyComment = (data) => ({
@@ -84,6 +96,7 @@ const dummyComment = (data) => ({
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    // ADD_POST
     case ADD_POST_REQUEST:
       return {
         ...state,
@@ -104,6 +117,27 @@ const reducer = (state = initialState, action) => {
         addPostLoading: false,
         addPostError: action.error,
       };
+    // REMOVE_POST
+    case REMOVE_POST_REQUEST:
+      return {
+        ...state,
+        removePostLoading: true,
+        removePostDone: false,
+        removePostError: null,
+      };
+    case REMOVE_POST_SUCCESS:
+      return {
+        ...state,
+        mainPosts: state.mainPosts.filter((v) => v.id !== action.data),
+        removePostLoading: false,
+        removePostDone: true,
+      };
+    case REMOVE_POST_FAILURE:
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostError: action.error,
+      };
     // ADD_COMMENT
     case ADD_COMMENT_REQUEST:
       return {
@@ -122,6 +156,7 @@ const reducer = (state = initialState, action) => {
       mainPosts[postIndex] = post;
       return {
         ...state,
+        mainPosts,
         // mainPosts: [dummyPost, ...state.mainPosts],
         addCommentLoading: false,
         addCommentDone: true,
