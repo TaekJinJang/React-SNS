@@ -5,6 +5,10 @@ import faker from 'faker';
 export const initialState = {
   mainPosts: [],
   imagePaths: [],
+  hasMorePosts: true,
+  loadPostsLoading: false, // 게시글 등록 시도중
+  loadPostsDone: false,
+  loadPostsError: null,
   addPostLoading: false, // 게시글 등록 시도중
   addPostDone: false,
   addPostError: null,
@@ -43,6 +47,9 @@ export const generateDummyPost = (number) =>
       ],
     }));
 
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
@@ -88,6 +95,22 @@ const dummyComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      // LOAD_POSTS
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsError = null;
+        draft.loadPostsDone = false;
+        break;
+      case LOAD_POSTS_SUCCESS:
+        draft.mainPosts = action.data.concat(draft.mainPosts);
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.hasMorePosts = draft.mainPosts.length < 50;
+        break;
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
       // ADD_POST
       case ADD_POST_REQUEST:
         draft.addPostLoading = true;

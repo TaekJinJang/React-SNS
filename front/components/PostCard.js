@@ -105,7 +105,6 @@ function PostCard({ post }) {
     </div>
   );
 }
-// `//`//
 
 PostCard.propTypes = {
   post: PropTypes.shape({
