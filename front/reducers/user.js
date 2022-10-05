@@ -4,6 +4,12 @@ import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from './post';
 export const initialState = {
   // 초기 데이터값
 
+  followLoading: false, // 팔로우 시도중
+  followDone: false,
+  followError: null,
+  unFollowLoading: false, // 언팔로우 시도중
+  unFollowDone: false,
+  unFollowError: null,
   logInLoading: false, // 로그인 시도중
   logInDone: false,
   logInError: null,
@@ -33,20 +39,20 @@ export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
 export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
-export const FALLOW_REQUEST = 'FALLOW_REQUEST';
-export const FALLOW_SUCCESS = 'FALLOW_SUCCESS';
-export const FALLOW_FAILURE = 'FALLOW_FAILURE';
-export const UNFALLOW_REQUEST = 'UNFALLOW_REQUEST';
-export const UNFALLOW_SUCCESS = 'UNFALLOW_SUCCESS';
-export const UNFALLOW_FAILURE = 'UNFALLOW_FAILURE';
+export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
+export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
+export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
+export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
+export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
+export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
 const dummyUser = (data) => ({
   ...data,
   nickname: 'tj',
   id: 1,
   Posts: [{ id: 1 }],
-  Followings: [{ nickname: '엄마' }, { nickname: '아빠' }, { nickname: '형' }],
-  Followers: [{ nickname: '엄마' }, { nickname: '아빠' }, { nickname: '형' }],
+  Followings: [{ id: '엄마' }, { id: '아빠' }, { id: '형' }],
+  Followers: [{ id: '엄마' }, { id: '아빠' }, { id: '형' }],
 });
 
 export const loginRequestAction = (data) => {
@@ -68,15 +74,46 @@ export const logoutRequestAction = (data) => {
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case FOLLOW_REQUEST:
+        draft.followLoading = true;
+        draft.followError = null;
+        draft.followDone = false;
+        break;
+      case FOLLOW_SUCCESS:
+        draft.followLoading = false;
+        draft.followDone = true;
+        draft.me.Followings.push({ id: action.data });
+        break;
+      case FOLLOW_FAILURE:
+        draft.followLoading = false;
+        draft.followError = action.error;
+        break;
+      case UNFOLLOW_REQUEST:
+        draft.logInLoading = true;
+        draft.logInError = null;
+        draft.logInDone = false;
+        break;
+      case UNFOLLOW_SUCCESS:
+        draft.logInLoading = false;
+        draft.logInDone = true;
+        draft.me.Followings = draft.me.Followings.filter(
+          (v) => v.id !== action.data,
+        );
+        break;
+      case UNFOLLOW_FAILURE:
+        draft.logInLoading = false;
+        draft.logInError = action.error;
+        break;
       case LOG_IN_REQUEST:
-        draft.logInLodaing = true;
+        draft.logInLoading = true;
         draft.logInError = null;
         draft.logInDone = false;
         break;
       case LOG_IN_SUCCESS:
-        draft.logInLodaing = false;
+        draft.logInLoading = false;
         draft.logInDone = true;
         draft.me = dummyUser(action.data);
+        break;
       case LOG_IN_FAILURE:
         draft.logInLoading = false;
         draft.logInError = action.error;

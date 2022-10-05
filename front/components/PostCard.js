@@ -13,6 +13,7 @@ import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import { REMOVE_POST_REQUEST } from '../reducers/post';
+import FollowButton from './FollowButton';
 
 function PostCard({ post }) {
   const dispatch = useDispatch();
@@ -73,6 +74,7 @@ function PostCard({ post }) {
             <EllipsisOutlined key="retweet" />
           </Popover>,
         ]}
+        extra={id && <FollowButton post={post} />}
       >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
