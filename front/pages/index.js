@@ -45,7 +45,7 @@ function Home() {
 
   return (
     <AppLayout>
-      {me && <PostForm />} {/* 로그인 했을때만 보여짐 */}
+      {me && <PostForm />} {/* 로그인 했을때만 보여짐  */}
       {mainPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
