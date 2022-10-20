@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Image = sequelize.define(
-    "Image",
+    'Image',
     {
       // MySQL에는 Images 테이블로 생성됌
       src: {
@@ -9,10 +9,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      charset: "utf8", // 한글 + 이모티콘
-      collate: "utf8_general_ci", // 한글 + 이모티콘 저장
+      charset: 'utf8', // 한글 + 이모티콘
+      collate: 'utf8_general_ci', // 한글 + 이모티콘 저장
     }
   );
-  Image.associate = (db) => {};
+  Image.associate = (db) => {
+    db.Image.belongsTo(db.Post);
+  };
   return Image;
 };

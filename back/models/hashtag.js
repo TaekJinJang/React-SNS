@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Hashtag = sequelize.define(
-    "Hashtag",
+    'Hashtag',
     {
       // MySQL에는 Hashtags 테이블로 생성됌
       content: {
@@ -9,10 +9,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      charset: "utf8mb4", // 한글 + 이모티콘
-      collate: "utf8mb4_general_ci", // 한글 + 이모티콘 저장
+      charset: 'utf8mb4', // 한글 + 이모티콘
+      collate: 'utf8mb4_general_ci', // 한글 + 이모티콘 저장
     }
   );
-  Hashtag.associate = (db) => {};
+  Hashtag.associate = (db) => {
+    db.Hashtag.belongsToMany(db.Post);
+  };
   return Hashtag;
 };
