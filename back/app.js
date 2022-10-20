@@ -1,6 +1,14 @@
 const express = require("express");
 const postRouter = require("./routes/post");
+const userRouter = require("./routes/user");
+const db = require("./models");
 const app = express();
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log("db 연결 성공");
+  })
+  .catch(console.error);
 
 // app.get -> 가져오다
 // app.post -> 생성하다
@@ -17,7 +25,8 @@ app.get("/api", (req, res) => {
   res.send("helo express");
 });
 app.use("/post", postRouter);
+app.use("/user", userRouter);
 
-app.listen(3003, () => {
-  console.log("gdgd");
+app.listen(3005, () => {
+  console.log("gdgd~");
 });

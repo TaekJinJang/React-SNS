@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon app"
   },
   "author": "jini_+_+",
   "license": "ISC",
@@ -13,5 +13,8 @@
     "mysql2": "^2.3.3",
     "sequelize": "^6.25.2",
     "sequelize-cli": "^6.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }

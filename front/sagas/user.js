@@ -59,12 +59,12 @@ function* logOut() {
 }
 
 function signUpAPI() {
-  return axios.post('/api/signUp');
+  return axios.post('http://localhost:3005/user');
 }
 function* signUp() {
   try {
-    // const result = yield call(signUpAPI); // call은 동기 fork는 비동기
-    yield delay(1000);
+    const result = yield call(signUpAPI); // call은 동기 fork는 비동기
+
     yield put({
       // put은 dispatch라고 생각하는게 편함
       type: SIGN_UP_SUCCESS,
