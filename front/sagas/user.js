@@ -1,4 +1,5 @@
-import { all, delay, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, delay, fork, put, takeEvery, call } from 'redux-saga/effects';
+import axios from 'axios';
 import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -18,17 +19,15 @@ import {
 } from '../reducers/user';
 
 function logInAPI(data) {
-  return axios.post('/api/login', data);
+  return axios.post('/user/login', data);
 }
 function* logIn(action) {
   try {
-    // const result = yield call(logInAPI, action.data); // call은 동기 fork는 비동기
-    yield delay(1000);
+    const result = yield call(logInAPI, action.data); // call은 동기 fork는 비동기
     yield put({
       // put은 dispatch라고 생각하는게 편함
       type: LOG_IN_SUCCESS,
-      data: action.data,
-      //   data: result.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -39,12 +38,11 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/api/logout');
+  return axios.post('/user/logout');
 }
 function* logOut() {
   try {
-    // const result = yield call(logOutAPI); // call은 동기 fork는 비동기
-    yield delay(1000);
+    const result = yield call(logOutAPI); // call은 동기 fork는 비동기
     yield put({
       // put은 dispatch라고 생각하는게 편함
       type: LOG_OUT_SUCCESS,
@@ -58,17 +56,18 @@ function* logOut() {
   }
 }
 
-function signUpAPI() {
-  return axios.post('http://localhost:3005/user');
+function signUpAPI(data) {
+  return axios.post('/user', data);
 }
-function* signUp() {
+function* signUp(action) {
   try {
-    const result = yield call(signUpAPI); // call은 동기 fork는 비동기
-
+    console.log(action.data);
+    const result = yield call(signUpAPI, action.data); // call은 동기 fork는 비동기
+    console.log(result);
     yield put({
       // put은 dispatch라고 생각하는게 편함
       type: SIGN_UP_SUCCESS,
-      //   data: result.data,
+      // data: result.action.data,
     });
   } catch (err) {
     yield put({
