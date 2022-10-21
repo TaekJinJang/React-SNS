@@ -1,15 +1,21 @@
-const express = require("express");
-const postRouter = require("./routes/post");
-const userRouter = require("./routes/user");
-const cors = require("cors");
-const db = require("./models");
-const passportConfig = require("./passport");
+const express = require('express');
+const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
+const session = require('express-session');
+const cookieParser = require('cookie-Parser');
+const passport = require('passport');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const db = require('./models');
+const passportConfig = require('./passport');
+
+dotenv.config();
 
 const app = express(); // 서버
 db.sequelize
   .sync()
   .then(() => {
-    console.log("db 연결 성공");
+    console.log('db 연결 성공');
   })
   .catch(console.error);
 passportConfig();
@@ -29,20 +35,30 @@ app.use(express.urlencoded({ extended: true })); // form을 submit 했을 때 �
 app.use(
   cors({
     // proxy방식으로 데이터를 넘겨줌 ( cors 문제 해결)
-    origin: "*",
+    origin: '*',
     // credentials: false,
   })
 );
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+  })
+); // 로그인할 때 브라우저랑 서버랑 같은 정보를 가져야하는데 보안을 위해 쿠키,세션으로 암호화
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get("/", (req, res) => {
-  res.send("helo express");
+app.get('/', (req, res) => {
+  res.send('helo express');
 });
-app.get("/api", (req, res) => {
-  res.send("helo express");
+app.get('/api', (req, res) => {
+  res.send('helo express');
 });
-app.use("/post", postRouter);
-app.use("/user", userRouter);
+app.use('/post', postRouter);
+app.use('/user', userRouter);
 
 app.listen(3005, () => {
-  console.log("gdgd~");
+  console.log('gdgd~');
 });
