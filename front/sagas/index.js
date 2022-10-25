@@ -4,6 +4,7 @@ import postSaga from './post';
 import userSaga from './user';
 
 axios.defaults.baseURL = 'http://localhost:3005';
+axios.defaults.withCredentials = true;
 
 export default function* rootSaga() {
   // 제너레이터 함수 알아보기

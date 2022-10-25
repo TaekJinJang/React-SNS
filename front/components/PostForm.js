@@ -20,7 +20,6 @@ function PostForm() {
   // }, []);
   const onSubmit = useCallback(() => {
     dispatch(addPost(text));
-    setText('');
   }, [text]);
 
   const imageInput = useRef();

@@ -12,9 +12,6 @@ const ErrorMessage = styled.div`
   color: red;
 `;
 // eslint-disable-next-line no-unused-vars
-const marginTop10 = styled.div`
-  margin-top: 10px;
-`;
 
 function Signup() {
   const dispatch = useDispatch();
@@ -127,11 +124,10 @@ function Signup() {
           </Checkbox>
           {termError && <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>}
         </div>
-        <marginTop10>
-          <Button type="primary" htmlType="submit" loading={signUpLoading}>
-            가입하기
-          </Button>
-        </marginTop10>
+
+        <Button type="primary" htmlType="submit" loading={signUpLoading}>
+          가입하기
+        </Button>
       </Form>
     </AppLayout>
   );
