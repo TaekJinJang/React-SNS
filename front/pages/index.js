@@ -5,6 +5,7 @@ import AppLayout from '../components/AppLayout';
 import PostCard from '../components/PostCard';
 import PostForm from '../components/PostForm';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST, LOAD_USERS_REQUEST } from '../reducers/user';
 
 function Home() {
   const dispatch = useDispatch();
@@ -16,6 +17,9 @@ function Home() {
   useEffect(() => {
     dispatch({
       type: LOAD_POSTS_REQUEST,
+    });
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
     });
   }, []);
 

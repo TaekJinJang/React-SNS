@@ -16,8 +16,29 @@ import {
   UNFOLLOW_FAILURE,
   FOLLOW_REQUEST,
   UNFOLLOW_REQUEST,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
 } from '../reducers/user';
 
+function loadMyInfoAPI() {
+  return axios.get('/user');
+}
+function* loadMyInfo(action) {
+  try {
+    const result = yield call(loadMyInfoAPI, action.data); // call은 동기 fork는 비동기
+    yield put({
+      // put은 dispatch라고 생각하는게 편함
+      type: LOAD_MY_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 function logInAPI(data) {
   return axios.post('/user/login', data);
 }
@@ -135,6 +156,9 @@ function* watchFollow() {
 function* watchUnFollow() {
   yield takeEvery(UNFOLLOW_REQUEST, unFollow);
 }
+function* watchLoadMyInfo() {
+  yield takeEvery(LOAD_MY_INFO_REQUEST, loadMyInfo);
+}
 
 export default function* userSaga() {
   yield all([
@@ -143,5 +167,6 @@ export default function* userSaga() {
     fork(watchSignUp),
     fork(watchFollow),
     fork(watchUnFollow),
+    fork(watchLoadMyInfo),
   ]);
 }
