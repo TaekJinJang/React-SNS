@@ -11,7 +11,19 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     });
     const fullPost = await Post.findOne({
       where: { id: post.id },
-      include: [{ model: Image }, { model: Comment }, { model: User }],
+      include: [
+        { model: Image },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
+        { model: User, attributes: ['id', 'nickname'] },
+      ],
     });
     res.status(201).json(fullPost);
   } catch (error) {
@@ -22,8 +34,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   // POST  /post/1/comment 주소부분에서 동적으로 바뀜(파라미터)
   try {
-    const post = await Post.fineOne({
-      // 실제 post 글이 있는지 확인 (보안)
+    const post = await Post.findOne({
       where: { id: req.params.postId },
     });
     if (!post) {
@@ -31,10 +42,19 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
     }
     const comment = await Comment.create({
       content: req.body.content,
-      PostId: req.params.postId,
+      PostId: parseInt(req.params.postId, 10),
       UserId: req.user.id,
     });
-    res.status(201).json(comment);
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+      ],
+    });
+    res.status(201).json(fullComment);
   } catch (error) {
     console.error(error);
     next(error);

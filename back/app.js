@@ -1,5 +1,6 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const session = require('express-session');
 const cookieParser = require('cookie-Parser');
@@ -8,6 +9,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const db = require('./models');
 const passportConfig = require('./passport');
+const morgan = require('morgan');
 
 dotenv.config();
 
@@ -32,6 +34,8 @@ passportConfig();
 // 프론트에서 데이터를 받아올 때
 app.use(express.json()); // json파일을 req.body에 넣어줌
 app.use(express.urlencoded({ extended: true })); // form을 submit 했을 때 데이터를 req.body에 넣어줌
+
+app.use(morgan('dev'));
 app.use(
   cors({
     // proxy방식으로 데이터를 넘겨줌 ( cors 문제 해결)
@@ -54,6 +58,7 @@ app.get('/', (req, res) => {
   res.send('helo express');
 });
 app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 app.listen(3005, () => {

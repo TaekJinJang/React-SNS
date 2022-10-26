@@ -21,6 +21,7 @@ export const initialState = {
 };
 
 // 더미데이터 faker 라이브러리 사용
+// 실제 데이터를 사용하니까 없애도 되지만 복습을 위해 남겨둘 예정
 export const generateDummyPost = (number) =>
   Array(number)
     .fill()
@@ -149,7 +150,7 @@ const reducer = (state = initialState, action) => {
         break;
       case ADD_COMMENT_SUCCESS:
         const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-        post.Comments.unshift(action.data.content);
+        post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;
