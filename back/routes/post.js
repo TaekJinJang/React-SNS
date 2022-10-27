@@ -32,6 +32,39 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     next(error);
   }
 });
+router.delete('/:postId', isLoggedIn, async (req, res, next) => {
+  // DELETE /post/1
+  try {
+    await Post.destroy({
+      where: { id: req.params.id },
+    });
+    const post = await Post.create({
+      content: req.body.content,
+      UserId: req.user.id,
+    });
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [
+        { model: Image },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User, // 댓글 작성자
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
+        { model: User, attributes: ['id', 'nickname'] }, // 게시글 작성자
+        { model: User, as: 'Likers', attributes: ['id'] }, // 좋아요 작성자
+      ],
+    });
+    res.status(201).json(fullPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   // POST  /post/1/comment 주소부분에서 동적으로 바뀜(파라미터)
   try {
