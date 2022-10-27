@@ -12,12 +12,19 @@ router.get('/', async (req, res, next) => {
         [Comment, 'createdAt', 'DESC'], // 내림차순
       ],
       include: [
-        { model: User, attributes: ['id', 'nickname'] },
+        { model: User, attributes: ['id', 'nickname'] }, // 게시글 작성자
         { model: Image },
         {
-          model: Comment,
-          include: [{ model: User, attributes: ['id', 'nickname'] }],
+          model: Comment, // 댓글 작성자
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+              order: [['createdAt', 'DESC']],
+            },
+          ],
         },
+        { model: User, as: 'Likers', attributes: ['id'] }, // 좋아요 작성자
       ],
     });
     res.status(200).json(posts);
