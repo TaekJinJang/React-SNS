@@ -39,17 +39,15 @@ function FollowList({ header, data }) {
       }
       bordered
       dataSource={data}
-      renderItem={(item) => {
+      renderItem={(item) => (
         <List.Item style={{ marginTop: 20 }}>
           <Card
             actions={[<StopOutlined key="stop" onClick={onCancel(item.id)} />]}
-            // 고차 함수를 사용해서 item.id로 값을 넘겨줌
           >
-            {console.log(item.nickname)}
             <Card.Meta description={item.nickname} />
           </Card>
-        </List.Item>;
-      }}
+        </List.Item>
+      )}
     />
   );
 }

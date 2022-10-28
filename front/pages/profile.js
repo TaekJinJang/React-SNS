@@ -13,7 +13,6 @@ import {
 function Profile() {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  console.log(me);
 
   useEffect(() => {
     dispatch({
