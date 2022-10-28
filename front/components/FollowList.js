@@ -3,8 +3,7 @@ import propTypes from 'prop-types';
 import { StopOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { UNFOLLOW_REQUEST } from '../reducers/user';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import { REMOVE_FOLLOWER_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 
 const Div = styled.div`
   margin: 10px 0px;
@@ -12,7 +11,7 @@ const Div = styled.div`
 `;
 function FollowList({ header, data }) {
   const dispatch = useDispatch();
-  const onCancel = () => () => {
+  const onCancel = (id) => () => {
     // 고차함수 찾아보기
     if (header === '팔로잉') {
       dispatch({
@@ -21,7 +20,7 @@ function FollowList({ header, data }) {
       });
     }
     dispatch({
-      type: REMOVE_POST_REQUEST,
+      type: REMOVE_FOLLOWER_REQUEST,
       data: id,
     });
   };

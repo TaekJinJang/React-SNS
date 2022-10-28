@@ -2,6 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { Post, Comment, Image, User } = require('../models');
 const { isLoggedIn } = require('./middlewares');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+try {
+  fs.accessSync('uploads');
+} catch (error) {
+  console.log('uploads 폴더가 없으므로 생성합니다.');
+  fs.mkdirSync('uploads');
+}
 
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
@@ -31,6 +41,29 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     console.error(error);
     next(error);
   }
+});
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      //택진.png
+      const ext = path.extname(file.originalname); //확장자 추출(png)
+      const basename = path.basename(file.originalname, ext); // 이미지의 이름을 꺼내올 수 있음(택진)
+
+      done(null, basename + new Date().getTime() + ext);
+      //시간을 저장해서 중복된 이름에 오류가 없게 할 수 있음 (택진12831203.png)
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, //20MB 로 제한
+});
+
+router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
+  //POST /post/images
+  console.log(req.files);
+  res.json(req.files.map((v) => v.filename));
 });
 
 router.delete('/:postId', isLoggedIn, async (req, res, next) => {

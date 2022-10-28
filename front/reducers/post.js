@@ -24,6 +24,9 @@ export const initialState = {
   addCommentLoading: false, // 댓글 등록 시도중
   addCommentDone: false,
   addCommentError: null,
+  uploadImagesLoading: false, // 이미지 업로드 시도중
+  uploadImagesDone: false,
+  uploadImagesError: null,
 };
 
 // 더미데이터 faker 라이브러리 사용
@@ -54,6 +57,9 @@ export const generateDummyPost = (number) =>
       ],
     }));
 
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
 export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
@@ -177,6 +183,21 @@ const reducer = (state = initialState, action) => {
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
         draft.addPostError = action.error;
+        break;
+      // UPLOAD_IMAGES
+      case UPLOAD_IMAGES_REQUEST:
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesError = null;
+        draft.uploadImagesDone = false;
+        break;
+      case UPLOAD_IMAGES_SUCCESS:
+        draft.imagePaths = action.data;
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        break;
+      case UPLOAD_IMAGES_FAILURE:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesError = action.error;
         break;
       // REMOVE_POST
       case REMOVE_POST_REQUEST:
