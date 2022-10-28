@@ -116,18 +116,15 @@ function* addPost(action) {
   }
 }
 function removePostAPI(data) {
-  return axios.delete('/api/post', data);
+  return axios.delete(`/post/${data}`);
 }
 function* removePost(action) {
   try {
-    // const result = yield call(removePostAPI, action.data); // call은 동기 fork는 비동기
-    yield delay(1000);
+    const result = yield call(removePostAPI, action.data); // call은 동기 fork는 비동기
     yield put({
       // put은 dispatch라고 생각하는게 편함
       type: REMOVE_POST_SUCCESS,
-      data: action.data,
-
-      //   data: result.data,
+      data: result.data,
     });
     yield put({
       type: REMOVE_POST_OF_ME,

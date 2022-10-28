@@ -9,6 +9,7 @@ const FollowButton = ({ post }) => {
   const { me, followLoading, unFollowLoading } = useSelector(
     (state) => state.user,
   );
+
   const isFollowing = me && me.Followings.find((v) => v.id === post.User.id);
 
   const onClickButton = useCallback(() => {
@@ -24,6 +25,11 @@ const FollowButton = ({ post }) => {
       });
     }
   }, [isFollowing]);
+
+  if (post.User.id === me.id) {
+    // 내 게시글엔 안보이도록
+    return null;
+  }
 
   return (
     <Button loading={followLoading || unFollowLoading} onClick={onClickButton}>

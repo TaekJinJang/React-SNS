@@ -9,6 +9,7 @@ function UserProfile() {
     dispatch(logoutRequestAction());
   }, []);
   const { me, logOutLoading } = useSelector((state) => state.user);
+
   return (
     <Card
       actions={[
@@ -17,12 +18,12 @@ function UserProfile() {
           <br />
           {me.Posts.length}
         </div>,
-        <div key="follwings">
+        <div key="followings">
           팔로잉
           <br />
           {me.Followings.length}
         </div>,
-        <div key="follwings">
+        <div key="followings">
           팔로워
           <br />
           {me.Followers.length}
