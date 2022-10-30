@@ -6,7 +6,7 @@ import {
   RetweetOutlined,
 } from '@ant-design/icons';
 import { Avatar, Button, Card, Comment, List, Popover } from 'antd';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import PostImages from './PostImages';
@@ -16,44 +16,70 @@ import {
   LIKE_POST_REQUEST,
   REMOVE_POST_REQUEST,
   UNLIKE_POST_REQUEST,
+  RETWEET_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
 
 function PostCard({ post }) {
   const dispatch = useDispatch();
-  const { removePostLoading } = useSelector((state) => state.post);
+  const { removePostLoading, retweetError } = useSelector(
+    (state) => state.post,
+  );
   const [commentFormOpened, setCommentFormOpened] = useState(false);
+  const id = useSelector((state) => state.user.me && state.user.me.id);
+  // const id = useSelector((state) => state.user.me?.id); 신문법 - 옵셔널 체이닝 연산자 .
+  const liked = post.Likers.find((v) => v.id === id);
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError);
+    }
+  }, [retweetError]);
   const onLike = useCallback(() => {
-    dispatch({
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
       type: LIKE_POST_REQUEST,
       data: post.id,
     });
-  }, []);
+  }, [id]);
   const onUnlike = useCallback(() => {
-    dispatch({
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
       type: UNLIKE_POST_REQUEST,
       data: post.id,
     });
-  }, []);
+  }, [id]);
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev); // state를 True/False로 바꾸기
   });
   const onRemovePost = useCallback(() => {
-    dispatch({
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
       type: REMOVE_POST_REQUEST,
       data: post.id,
     });
-  }, []);
-  const id = useSelector((state) => state.user.me && state.user.me.id);
-  // const id = useSelector((state) => state.user.me?.id); 신문법 - 옵셔널 체이닝 연산자 .
-  const liked = post.Likers.find((v) => v.id === id);
+  }, [id]);
+  const onRetweet = useCallback(() => {
+    if (!id) {
+      return alert('로그인이 필요합니다.');
+    }
+    return dispatch({
+      type: RETWEET_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
 
   return (
     <div style={{ marginBottom: 20 }}>
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <RetweetOutlined key="retweet" />,
+          <RetweetOutlined key="retweet" onClick={onRetweet} />,
           liked ? (
             <HeartTwoTone
               twoToneColor="#eb2f96"

@@ -27,6 +27,9 @@ export const initialState = {
   uploadImagesLoading: false, // 이미지 업로드 시도중
   uploadImagesDone: false,
   uploadImagesError: null,
+  retweetLoading: false, // 리트윗 시도중
+  retweetDone: false,
+  retweetError: null,
 };
 
 // 더미데이터 faker 라이브러리 사용
@@ -78,8 +81,12 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -114,6 +121,10 @@ const dummyComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      //REMOVE_IMAGE
+      case REMOVE_IMAGE:
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+        break;
       // LIKE_POST
       case LIKE_POST_REQUEST:
         draft.likePostLoading = true;
@@ -179,10 +190,26 @@ const reducer = (state = initialState, action) => {
         draft.mainPosts.unshift(action.data);
         draft.addPostLoading = false;
         draft.addPostDone = true;
+        draft.imagePaths = [];
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
         draft.addPostError = action.error;
+        break;
+      // RETWEET
+      case RETWEET_REQUEST:
+        draft.retweetLoading = true;
+        draft.retweetError = null;
+        draft.retweetDone = false;
+        break;
+      case RETWEET_SUCCESS:
+        draft.retweetLoading = false;
+        draft.retweetDone = true;
+        draft.mainPosts.unshift(action.data);
+        break;
+      case RETWEET_FAILURE:
+        draft.retweetLoading = false;
+        draft.retweetError = action.error;
         break;
       // UPLOAD_IMAGES
       case UPLOAD_IMAGES_REQUEST:
