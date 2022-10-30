@@ -155,11 +155,6 @@ router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
             {
               model: Image,
             },
-            {
-              model: User,
-              as: "Likers",
-              attributes: ["id"],
-            },
           ],
         },
         {
@@ -178,9 +173,14 @@ router.post("/:postId/retweet", isLoggedIn, async (req, res, next) => {
             },
           ],
         },
+        {
+          model: User,
+          as: "Likers",
+          attributes: ["id"],
+        },
       ],
     });
-    res.status(201).json(retweet);
+    res.status(201).json(retweetWithPrevPost);
   } catch (error) {
     console.error(error);
     next(error);
