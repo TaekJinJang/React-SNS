@@ -27,7 +27,7 @@ function Home() {
       type: LOAD_MY_INFO_REQUEST,
     });
   }, []);
-
+  // 1
   useEffect(() => {
     function onScroll() {
       if (
