@@ -34,7 +34,7 @@ router.get('/', async (req, res, next) => {
           },
         ],
       });
-
+      // 블로그 포스팅 중 조금 수정
       res.status(200).json(fullUserWithoutPassword);
     } else {
       res.status(200).json(null);
