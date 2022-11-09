@@ -118,8 +118,8 @@ const dummyComment = (data) => ({
   },
 });
 // 리듀서는 이전 상태를 액션을 통해 다음 상태로 만들어내는 함수 ( 단! 불변성을 지키면서 !!)
-const reducer = (state = initialState, action) => {
-  return produce(state, (draft) => {
+const reducer = (state = initialState, action) =>
+  produce(state, (draft) => {
     switch (action.type) {
       //REMOVE_IMAGE
       case REMOVE_IMAGE:
@@ -171,10 +171,10 @@ const reducer = (state = initialState, action) => {
         draft.loadPostsDone = false;
         break;
       case LOAD_POSTS_SUCCESS:
-        draft.mainPosts = draft.mainPosts.concat(action.data);
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
-        draft.hasMorePosts = draft.data.length === 10;
+        draft.mainPosts = draft.mainPosts.concat(action.data);
+        draft.hasMorePosts = action.data.length === 10;
         break;
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
@@ -278,6 +278,4 @@ const reducer = (state = initialState, action) => {
         break;
     }
   });
-};
-
 export default reducer;

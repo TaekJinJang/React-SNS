@@ -121,7 +121,7 @@ function loadPostsAPI(lastId) {
 }
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI, action.data); // call은 동기 fork는 비동기
+    const result = yield call(loadPostsAPI, action.lastId); // call은 동기 fork는 비동기
     yield put({
       // put은 dispatch라고 생각하는게 편함
       type: LOAD_POSTS_SUCCESS,
