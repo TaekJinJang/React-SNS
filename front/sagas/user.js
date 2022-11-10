@@ -81,7 +81,7 @@ function* loadMyInfo(action) {
   }
 }
 function loadUserAPI(data) {
-  return axios.get(`/user${data}`);
+  return axios.get(`/user/${data}`);
 }
 function* loadUser(action) {
   try {
@@ -92,6 +92,7 @@ function* loadUser(action) {
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_USER_FAILURE,
       error: err.response.data,

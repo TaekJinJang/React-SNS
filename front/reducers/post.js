@@ -16,7 +16,7 @@ export const initialState = {
   loadPostsLoading: false, // 게시글 불러오기 시도중
   loadPostsDone: false,
   loadPostsError: null,
-  loadPostLoading: false, // 게시글 불러오기 시도중
+  loadPostLoading: false, // 게시글 1개 불러오기 시도중
   loadPostDone: false,
   loadPostError: null,
   addPostLoading: false, // 게시글 등록 시도중
@@ -76,6 +76,12 @@ export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST'; // state 재사용함 (loadPosts~)
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST'; // state 재사용함 (loadPosts~)
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
@@ -171,18 +177,24 @@ const reducer = (state = initialState, action) =>
         draft.unlikePostLoading = false;
         draft.unlikePostError = action.error;
         break;
-      // LOAD_POSTS
+      // LOAD_POSTS, LOAD_USER_POSTS, LOAD_HASHTAG_POSTS
+      case LOAD_USER_POSTS_REQUEST:
+      case LOAD_HASHTAG_POSTS_REQUEST:
       case LOAD_POSTS_REQUEST:
         draft.loadPostsLoading = true;
         draft.loadPostsError = null;
         draft.loadPostsDone = false;
         break;
+      case LOAD_USER_POSTS_SUCCESS:
+      case LOAD_HASHTAG_POSTS_SUCCESS:
       case LOAD_POSTS_SUCCESS:
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.mainPosts = draft.mainPosts.concat(action.data);
         draft.hasMorePosts = action.data.length === 10;
         break;
+      case LOAD_USER_POSTS_FAILURE:
+      case LOAD_HASHTAG_POSTS_FAILURE:
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;

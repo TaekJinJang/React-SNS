@@ -2,6 +2,7 @@ const express = require("express");
 const postRouter = require("./routes/post");
 const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
+const hashtagRouter = require("./routes/hashtag");
 const session = require("express-session");
 const cookieParser = require("cookie-Parser");
 const passport = require("passport");
@@ -62,6 +63,7 @@ app.get("/", (req, res) => {
 app.use("/post", postRouter);
 app.use("/posts", postsRouter);
 app.use("/user", userRouter);
+app.use("/hashtag", hashtagRouter);
 
 app.listen(3005, () => {
   console.log("gdgd~");
