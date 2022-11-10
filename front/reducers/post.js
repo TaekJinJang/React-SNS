@@ -5,6 +5,7 @@ import faker from 'faker';
 export const initialState = {
   mainPosts: [],
   imagePaths: [],
+  singlePost: [],
   hasMorePosts: true,
   likePostLoading: false, // 게시글 좋아요 시도중
   likePostDone: false,
@@ -15,6 +16,9 @@ export const initialState = {
   loadPostsLoading: false, // 게시글 불러오기 시도중
   loadPostsDone: false,
   loadPostsError: null,
+  loadPostLoading: false, // 게시글 불러오기 시도중
+  loadPostDone: false,
+  loadPostError: null,
   addPostLoading: false, // 게시글 등록 시도중
   addPostDone: false,
   addPostError: null,
@@ -72,6 +76,9 @@ export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
@@ -179,6 +186,22 @@ const reducer = (state = initialState, action) =>
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
+        break;
+      // LOAD_POST
+      case LOAD_POST_REQUEST:
+        draft.loadPostLoading = true;
+        draft.loadPostError = null;
+        draft.loadPostDone = false;
+        break;
+      case LOAD_POST_SUCCESS:
+        draft.loadPostLoading = false;
+        draft.loadPostDone = true;
+        draft.singlePost = action.data;
+
+        break;
+      case LOAD_POST_FAILURE:
+        draft.loadPostLoading = false;
+        draft.loadPostError = action.error;
         break;
       // ADD_POST
       case ADD_POST_REQUEST:
