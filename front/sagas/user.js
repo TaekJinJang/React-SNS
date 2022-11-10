@@ -1,4 +1,12 @@
-import { all, delay, fork, put, takeEvery, call } from 'redux-saga/effects';
+import {
+  all,
+  delay,
+  fork,
+  put,
+  takeEvery,
+  call,
+  takeLatest,
+} from 'redux-saga/effects';
 import axios from 'axios';
 import {
   LOG_IN_REQUEST,
@@ -31,6 +39,9 @@ import {
   REMOVE_FOLLOWER_REQUEST,
   REMOVE_FOLLOWER_SUCCESS,
   REMOVE_FOLLOWER_FAILURE,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
 } from '../reducers/user';
 
 function changeNicknameAPI(data) {
@@ -56,7 +67,7 @@ function loadMyInfoAPI() {
 }
 function* loadMyInfo(action) {
   try {
-    const result = yield call(loadMyInfoAPI, action.data); // call은 동기 fork는 비동기
+    const result = yield call(loadMyInfoAPI); // call은 동기 fork는 비동기
     yield put({
       // put은 dispatch라고 생각하는게 편함
       type: LOAD_MY_INFO_SUCCESS,
@@ -65,6 +76,24 @@ function* loadMyInfo(action) {
   } catch (err) {
     yield put({
       type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function loadUserAPI(data) {
+  return axios.get(`/user${data}`);
+}
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data); // call은 동기 fork는 비동기
+    yield put({
+      // put은 dispatch라고 생각하는게 편함
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_USER_FAILURE,
       error: err.response.data,
     });
   }
@@ -222,34 +251,37 @@ function* removeFollower(action) {
 function* watchLogIn() {
   // while take 문과 takeEvery는 같은 의미 하지만 while take는 동기 takeEvery는 비동기
   // takeLatest는 마지막 이벤트만 처리 ex) 클릭을 두번했을때 마지막클릭만 처리함  ///// 모든이벤트 중 마지막 이벤트만 처리하는게 아니라 동시에 로딩중인 이벤트 중 마지막 이벤트만 처리하는거임
-  yield takeEvery(LOG_IN_REQUEST, logIn);
+  yield takeLatest(LOG_IN_REQUEST, logIn);
 }
 function* watchLogOut() {
-  yield takeEvery(LOG_OUT_REQUEST, logOut);
+  yield takeLatest(LOG_OUT_REQUEST, logOut);
 }
 function* watchSignUp() {
-  yield takeEvery(SIGN_UP_REQUEST, signUp);
+  yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 function* watchFollow() {
-  yield takeEvery(FOLLOW_REQUEST, follow);
+  yield takeLatest(FOLLOW_REQUEST, follow);
 }
 function* watchUnFollow() {
-  yield takeEvery(UNFOLLOW_REQUEST, unFollow);
+  yield takeLatest(UNFOLLOW_REQUEST, unFollow);
 }
 function* watchLoadFollowers() {
-  yield takeEvery(LOAD_FOLLOWERS_REQUEST, loadFollowers);
+  yield takeLatest(LOAD_FOLLOWERS_REQUEST, loadFollowers);
 }
 function* watchLoadFollowings() {
-  yield takeEvery(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
+  yield takeLatest(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
 }
 function* watchRemoveFollower() {
-  yield takeEvery(REMOVE_FOLLOWER_REQUEST, removeFollower);
+  yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower);
 }
 function* watchLoadMyInfo() {
-  yield takeEvery(LOAD_MY_INFO_REQUEST, loadMyInfo);
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
 function* watchChangeNickname() {
-  yield takeEvery(CHANGE_NICKNAME_REQUEST, changeNickname);
+  yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
+}
+function* watchLoadUser() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
 
 export default function* userSaga() {
@@ -264,5 +296,6 @@ export default function* userSaga() {
     fork(watchRemoveFollower),
     fork(watchLoadMyInfo),
     fork(watchChangeNickname),
+    fork(watchLoadUser),
   ]);
 }

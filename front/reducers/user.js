@@ -4,6 +4,9 @@ import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from './post';
 export const initialState = {
   // 초기 데이터값
 
+  loadUserLoading: false, // 로그인쿠키 시도중
+  loadUserDone: false,
+  loadUserError: null,
   loadMyInfoLoading: false, // 로그인쿠키 시도중
   loadMyInfoDone: false,
   loadMyInfoError: null,
@@ -35,10 +38,14 @@ export const initialState = {
   changeNicknameDone: false,
   changeNicknameError: null,
   me: null,
+  userInfo: null,
   signUpData: {},
   loginData: {},
 };
 
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
@@ -139,6 +146,20 @@ const reducer = (state = initialState, action) => {
       case LOAD_MY_INFO_FAILURE:
         draft.loadMyInfoLoading = false;
         draft.loadMyInfoError = action.error;
+        break;
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserError = null;
+        draft.loadUserDone = false;
+        break;
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.loadUserDone = true;
+        draft.userInfo = action.data;
+        break;
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserError = action.error;
         break;
       case FOLLOW_REQUEST:
         draft.followLoading = true;
