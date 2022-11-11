@@ -49,7 +49,7 @@ router.get("/", async (req, res, next) => {
 router.get("/:id/posts", async (req, res, next) => {
   // GET /user/1/posts
   try {
-    const where = { id: req.params.id };
+    const where = { UserId: req.params.id };
     if (parseInt(req.query.lastId, 10)) {
       // 초기 로딩이 아닐 때
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
