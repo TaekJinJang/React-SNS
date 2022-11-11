@@ -145,7 +145,10 @@ function* loadPosts(action) {
   }
 }
 function loadHashtagPostsAPI(data, lastId) {
-  return axios.get(`/hashtag/${data}?lastId=${lastId || 0}`);
+  return axios.get(
+    // 그냥 ${data}로 하면 한글이 되기때문에 에러가 뜸 그래서 encodeURIComponent로 변형시켰다가 decodeURIComponent로 바꿔옴
+    `/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`,
+  );
 }
 function* loadHashtagPosts(action) {
   try {
@@ -156,7 +159,7 @@ function* loadHashtagPosts(action) {
       data: result.data,
     });
   } catch (err) {
-    console.error(err);
+    console.error('에러', err);
     yield put({
       type: LOAD_HASHTAG_POSTS_FAILURE,
       error: err.response.data,

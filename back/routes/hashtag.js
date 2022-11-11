@@ -14,12 +14,12 @@ router.get("/:hashtag", async (req, res, next) => {
     const posts = await Post.findAll({
       where,
       limit: 10,
-      order: [
-        ["createdAt", "DESC"],
-        [Comment, "createdAt", "DESC"], // 내림차순
-      ],
       include: [
-        { model: Hashtag, where: { name: req.params.hashtag } },
+        {
+          model: Hashtag,
+          // 그냥 ${data}로 하면 한글이 되기때문에 에러가 뜸 그래서 encodeURIComponent로 변형시켰다가 decodeURIComponent로 바꿔옴
+          where: { name: decodeURIComponent(req.params.hashtag) },
+        },
         { model: User, attributes: ["id", "nickname"] }, // 게시글 작성자
         { model: Image },
         {

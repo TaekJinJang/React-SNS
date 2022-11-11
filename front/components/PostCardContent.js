@@ -6,10 +6,10 @@ function PostCardContent({ postData }) {
   // 첫번째 게시글 #해시태그 #익스프레스 #해시태그 잡기
   return (
     <div>
-      {postData.split(/(#[^\s#]+)/g).map((v, index) => {
+      {postData.split(/(#[^\s#]+)/g).map((v, i) => {
         if (v.match(/(#[^\s#]+)/g)) {
           return (
-            <Link href="/hashtag/${v.slice(1)}" key={index}>
+            <Link href={`/hashtag/${v.slice(1)}`} key={i}>
               <a>{v}</a>
             </Link>
           );
