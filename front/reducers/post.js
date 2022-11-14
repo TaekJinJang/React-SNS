@@ -5,7 +5,7 @@ import faker from 'faker';
 export const initialState = {
   mainPosts: [],
   imagePaths: [],
-  singlePost: [],
+  singlePost: null,
   hasMorePosts: true,
   likePostLoading: false, // 게시글 좋아요 시도중
   likePostDone: false,
@@ -209,7 +209,6 @@ const reducer = (state = initialState, action) =>
         draft.loadPostLoading = false;
         draft.loadPostDone = true;
         draft.singlePost = action.data;
-
         break;
       case LOAD_POST_FAILURE:
         draft.loadPostLoading = false;
