@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 router.get("/:hashtag", async (req, res, next) => {
   // GET /hashtag/해시태그
   try {
-    const where = { UserId: req.params.userId };
+    const where = {};
     if (parseInt(req.query.lastId, 10)) {
       // 초기 로딩이 아닐 때
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
