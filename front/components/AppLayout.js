@@ -8,6 +8,9 @@ import { useSelector } from 'react-redux';
 import UserProfile from './UserProfile';
 // eslint-disable-next-line import/no-cycle
 import LoginForm from './LoginForm';
+import useinput from '../hooks/useinput';
+import { useCallback } from 'react';
+import router from 'next/router';
 
 const SearchInput = styled(Input.Search)`
   // antd 디자인에 styled-component넣는법
@@ -26,8 +29,13 @@ const Global = createGlobalStyle`
   }
 `;
 function AppLayout({ children }) {
+  const [searchInput, onChangeSearchInput] = useinput('');
   // const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 더미데이터
   const { me } = useSelector((state) => state.user);
+
+  const onSearch = useCallback(() => {
+    router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
 
   return (
     <div>
@@ -44,13 +52,22 @@ function AppLayout({ children }) {
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <SearchInput placeholder="검색" allowClear enterButton />
+          <SearchInput
+            placeholder="검색"
+            allowClear
+            enterButton
+            value={searchInput}
+            onChange={onChangeSearchInput}
+            onSearch={onSearch}
+          />
         </Menu.Item>
+        {/*
         <Menu.Item>
           <Link href="/signup">
             <a>회원가입</a>
           </Link>
         </Menu.Item>
+  */}
       </Menu>
 
       {/* gutter 는 Col 사이의 간격 */}
