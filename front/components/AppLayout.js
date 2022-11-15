@@ -33,7 +33,7 @@ function AppLayout({ children }) {
     <div>
       <Menu mode="horizontal">
         <Global />
-        <Menu.Item>
+        <Menu.Item key={'1'}>
           <Link href="/">
             <a>노드버드</a>
           </Link>
