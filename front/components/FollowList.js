@@ -9,7 +9,7 @@ const Div = styled.div`
   margin: 10px 0px;
   text-align: center;
 `;
-function FollowList({ header, data }) {
+function FollowList({ header, data, onClickMore, loading }) {
   const dispatch = useDispatch();
   const onCancel = (id) => () => {
     // 고차함수 찾아보기
@@ -33,7 +33,9 @@ function FollowList({ header, data }) {
       grid={{ gutter: 4, xs: 2, md: 3 }}
       loadMore={
         <Div>
-          <Button>더 보기</Button>
+          <Button onClick={onClickMore} loading={loading}>
+            더 보기
+          </Button>
         </Div>
       }
       bordered
@@ -54,6 +56,8 @@ function FollowList({ header, data }) {
 FollowList.propTypes = {
   header: propTypes.string.isRequired,
   data: propTypes.array.isRequired,
+  onClickMore: propTypes.func.isRequired,
+  loading: propTypes.bool.isRequired,
 };
 
 export default FollowList;

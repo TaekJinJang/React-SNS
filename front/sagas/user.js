@@ -82,6 +82,46 @@ function* loadMyInfo(action) {
     });
   }
 }
+
+function loadFollowersAPI(data) {
+  return axios.get(`/user/followers`, data);
+}
+function* loadFollowers(action) {
+  try {
+    const result = yield call(loadFollowersAPI, action.data); // call은 동기 fork는 비동기
+    yield put({
+      // put은 dispatch라고 생각하는게 편함
+      type: LOAD_FOLLOWERS_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_FOLLOWERS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+function loadFollowingsAPI(data) {
+  return axios.get(`/user/followings`, data);
+}
+function* loadFollowings(action) {
+  try {
+    const result = yield call(loadFollowingsAPI, action.data); // call은 동기 fork는 비동기
+    yield put({
+      // put은 dispatch라고 생각하는게 편함
+      type: LOAD_FOLLOWINGS_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_FOLLOWINGS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function loadUserAPI(data) {
   return axios.get(`/user/${data}`);
 }
@@ -201,44 +241,7 @@ function* unFollow(action) {
     });
   }
 }
-function loadFollowersAPI(data) {
-  return axios.get(`/user/followers`, data);
-}
-function* loadFollowers(action) {
-  try {
-    const result = yield call(loadFollowersAPI, action.data); // call은 동기 fork는 비동기
-    yield put({
-      // put은 dispatch라고 생각하는게 편함
-      type: LOAD_FOLLOWERS_SUCCESS,
-      data: result.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: LOAD_FOLLOWERS_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
-function loadFollowingsAPI(data) {
-  return axios.get(`/user/followings`, data);
-}
-function* loadFollowings(action) {
-  try {
-    const result = yield call(loadFollowingsAPI, action.data); // call은 동기 fork는 비동기
-    yield put({
-      // put은 dispatch라고 생각하는게 편함
-      type: LOAD_FOLLOWINGS_SUCCESS,
-      data: result.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: LOAD_FOLLOWINGS_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
+
 function removeFollowerAPI(data) {
   return axios.delete(`/user/follower/${data}`);
 }

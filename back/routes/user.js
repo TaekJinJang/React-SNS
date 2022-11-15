@@ -46,97 +46,6 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/followers', isLoggedIn, async (req, res, next) => {
-  //GET /user/followers
-  try {
-    const user = await User.findOne({
-      where: { id: req.user.id },
-    });
-    if (!user) {
-      return res.status(403).send('존재하지 않는 사용자입니다.');
-    }
-    const followers = await user.getFollowers({
-      limit: req.query.limit,
-    });
-    res.status(200).json(followers);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-router.get('/followings', isLoggedIn, async (req, res, next) => {
-  //GET /user/followings
-  try {
-    const user = await User.findOne({
-      where: { id: req.user.id },
-    });
-    if (!user) {
-      return res.status(403).send('존재하지 않는 사용자입니다.');
-    }
-    const followings = await user.getFollowings({ limit: 3 });
-    res.status(200).json(followings);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
-router.get('/:id/posts', async (req, res, next) => {
-  // GET /user/1/posts
-  try {
-    const where = { UserId: req.params.id };
-    if (parseInt(req.query.lastId, 10)) {
-      // 초기 로딩이 아닐 때
-      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
-    }
-    const posts = await Post.findAll({
-      where,
-      limit: 10,
-      order: [
-        ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], // 내림차순
-      ],
-      include: [
-        { model: User, attributes: ['id', 'nickname'] }, // 게시글 작성자
-        { model: Image },
-        {
-          model: Comment, // 댓글 작성자
-          include: [
-            {
-              model: User,
-              attributes: ['id', 'nickname'],
-              order: [['createdAt', 'DESC']],
-            },
-          ],
-        },
-        {
-          model: Post,
-          as: 'Retweet',
-          include: [
-            {
-              model: User,
-              attributes: ['id', 'nickname'],
-            },
-            {
-              model: Image,
-            },
-            {
-              model: User,
-              as: 'Likers',
-              attributes: ['id'],
-            },
-          ],
-        },
-        { model: User, as: 'Likers', attributes: ['id'] }, // 좋아요 작성자
-      ],
-    });
-    res.status(200).json(posts);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   //POST /user/login
   console.log('gd');
@@ -234,6 +143,98 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
     next(error);
   }
 });
+
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+  // GET /user/followers
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    if (!user) {
+      res.status(403).send('존재하지 않는 사용자입니다.');
+    }
+    const followers = await user.getFollowers({
+      attributes: ['id', 'nickname'],
+      limit: parseInt(req.query.limit, 10),
+    });
+    res.status(200).json(followers);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+router.get('/followings', isLoggedIn, async (req, res, next) => {
+  // GET /user/followings
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    if (!user) {
+      res.status(403).send('존재하지 않는 사용자입니다.');
+    }
+    const followings = await user.getFollowings({
+      attributes: ['id', 'nickname'],
+      limit: parseInt(req.query.limit, 10),
+    });
+    res.status(200).json(followings);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get('/:id/posts', async (req, res, next) => {
+  // GET /user/1/posts
+  try {
+    const where = { UserId: req.params.id };
+    if (parseInt(req.query.lastId, 10)) {
+      // 초기 로딩이 아닐 때
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) };
+    }
+    const posts = await Post.findAll({
+      where,
+      limit: 10,
+      order: [
+        ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'DESC'], // 내림차순
+      ],
+      include: [
+        { model: User, attributes: ['id', 'nickname'] }, // 게시글 작성자
+        { model: Image },
+        {
+          model: Comment, // 댓글 작성자
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+              order: [['createdAt', 'DESC']],
+            },
+          ],
+        },
+        {
+          model: Post,
+          as: 'Retweet',
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+            {
+              model: Image,
+            },
+            {
+              model: User,
+              as: 'Likers',
+              attributes: ['id'],
+            },
+          ],
+        },
+        { model: User, as: 'Likers', attributes: ['id'] }, // 좋아요 작성자
+      ],
+    });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
   //PATCH /user/1/follow
   try {
