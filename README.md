@@ -6,7 +6,7 @@
   - React Hooks
   - Redux / Redux Saga
   - Ant Design
-  - Styled COmponents
+  - Styled Components
 
 - BackEnd
   - Node.js
